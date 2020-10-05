@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Task {
+  id: ID!
+  title: String!
+  content: String!
+  status: TaskStatus!
+}
+
+enum TaskStatus {
+  WAITING
+  DONE
+}
+
+type Query {
+  tasks(status: TaskStatus, start: Int = 0, pageSize: Int = 10): [Task!]!
+}
+
+type Mutation {
+  createTask(taskData: TaskInput!): Task!
+  updateTask(title: String, content: String, active: Boolean, status: TaskStatus, id: ID!): Task!
+}
+
+input TaskInput {
+  title: String!
+  content: String!
+}
