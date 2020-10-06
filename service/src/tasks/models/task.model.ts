@@ -8,9 +8,8 @@ import { TaskStatus } from '../enums/task.status.enum';
 @Schema()
 export class Task extends Document {
     @Field(() => ID)
-    @Prop()
-    id: string;
-  
+    _id: string;
+
     @Field()
     @Prop()
     title: string;
@@ -23,13 +22,13 @@ export class Task extends Document {
     @Prop()
     status: TaskStatus;
     
-    @Prop()
+    @Prop({ default: true })
     active: Boolean;
 
-    @Prop()
+    @Prop({ default: Date.now })
     createdAt: Date;
 
-    @Prop()
+    @Prop({ default: Date.now })
     updatedAt: Date; 
 }
 
