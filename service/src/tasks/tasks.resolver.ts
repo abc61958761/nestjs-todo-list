@@ -4,20 +4,33 @@ import { TaskInput } from './input/task.input';
 import { UpdateTaskArgs } from './args/task.update.args';
 import { TaskArgs } from './args/task.args';
 import { TasksService } from './tasks.service';
+import { TaskStatus } from './enums/task.status.enum';
+import { TaskConnection } from './models/taskConnection.model';
 
-@Resolver()
+ @Resolver()
 export class TasksResolver {
     constructor(
         private taskService: TasksService,
     ) {}
     
-    @Query(() => [Task])
-    async tasks(
+    @Query(() => TaskConnection)
+    async todoTasks(
         @Args() taskArgs: TaskArgs
     ) {
-        const tasks = await this.taskService.queryTasks(taskArgs);
+        const tasks = await this.taskService.queryTasks(taskArgs, TaskStatus.WAITING);
+        const taskCount = await this.taskService.taskCount(taskArgs, TaskStatus.WAITING);
+        
+        return { tasks, taskCount }
+    }
 
-        return tasks;
+    @Query(() => TaskConnection)
+    async doneTasks(
+        @Args() taskArgs: TaskArgs
+    ) {
+        const tasks = await this.taskService.queryTasks(taskArgs, TaskStatus.DONE );
+        const taskCount = await this.taskService.taskCount(taskArgs, TaskStatus.DONE);
+
+        return { tasks, taskCount};
     }
 
     @Mutation(() => Task)

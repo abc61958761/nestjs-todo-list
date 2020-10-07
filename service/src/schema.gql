@@ -14,8 +14,14 @@ enum TaskStatus {
   DONE
 }
 
+type TaskConnection {
+  taskCount: Float!
+  tasks: [Task!]!
+}
+
 type Query {
-  tasks(status: TaskStatus, start: Int = 0, pageSize: Int = 10): [Task!]!
+  todoTasks(start: Int = 0, pageSize: Int = 10): TaskConnection!
+  doneTasks(start: Int = 0, pageSize: Int = 10): TaskConnection!
 }
 
 type Mutation {

@@ -6,8 +6,9 @@ import { Task } from './models/task.model';
 import { TaskInput } from './input/task.input';
 import { UpdateTaskArgs } from './args/task.update.args';
 import { TaskArgs } from './args/task.args';
+import { TaskStatus } from './enums/task.status.enum';
 
-@Injectable()
+ @Injectable()
 export class TasksService {
     constructor(
         @InjectModel(Task.name)
@@ -27,18 +28,29 @@ export class TasksService {
         }, { new: true });
     }
 
-    queryTasks(args: TaskArgs) {
+    queryTasks(args: TaskArgs, status: TaskStatus) {
         const tasks = this.taskModel.find()
             .where('active').equals(true)
             .sort('createdAt')
             .skip(args.start)
             .limit(args.pageSize);
 
-        if (args.status) {
-            tasks.where('status').equals(args.status)
+        if (status) {
+            tasks.where('status').equals(status)
         }
 
         return tasks.exec();
+    }
+
+    taskCount(args: TaskArgs, status: TaskStatus) {
+        const tasks = this.taskModel.find()
+            .where('active').equals(true)
+
+        if (status) {
+            tasks.where('status').equals(status)
+        }
+
+        return tasks.countDocuments().exec();
     }
 
 }

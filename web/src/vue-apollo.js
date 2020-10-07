@@ -17,7 +17,7 @@ const defaultOptions = {
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
-  wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:4000/graphql',
+  // wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:4000/graphql',
   // LocalStorage token
   tokenName: AUTH_TOKEN,
   // Enable Automatic Query persisting with Apollo Engine
@@ -60,7 +60,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'cache-and-network',
       },
     },
     errorHandler (error) {
