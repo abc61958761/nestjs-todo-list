@@ -7,7 +7,7 @@ import { TasksService } from './tasks.service';
 import { TaskStatus } from './enums/task.status.enum';
 import { TaskConnection } from './models/taskConnection.model';
 
- @Resolver()
+ @Resolver(() => Task)
 export class TasksResolver {
     constructor(
         private taskService: TasksService,

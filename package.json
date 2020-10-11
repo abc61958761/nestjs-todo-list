@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@apollo/gateway": "^0.21.0",
+    "@nestjs/graphql": "^7.7.0"
+  }
+}
