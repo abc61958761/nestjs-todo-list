@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
 import { Task } from './models/task.model';
 import { TaskInput } from './input/task.input';
 import { UpdateTaskArgs } from './args/task.update.args';
@@ -6,7 +6,7 @@ import { TaskArgs } from './args/task.args';
 import { TasksService } from './tasks.service';
 import { TaskStatus } from './enums/task.status.enum';
 import { TaskConnection } from './models/taskConnection.model';
-
+import { User } from './models/user.model';
  @Resolver(() => Task)
 export class TasksResolver {
     constructor(
@@ -48,5 +48,10 @@ export class TasksResolver {
         const task = await this.taskService.updateTask(_id, updateTaskArgs);
 
         return task;
+    }
+
+    @ResolveField(() => User)
+    user(@Parent() task: Task) {
+      return { __typename: 'User', _id: task.userId };
     }
  }

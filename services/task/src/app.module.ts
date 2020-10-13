@@ -9,13 +9,10 @@ import { join } from 'path';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://root:test@localhost:27012/admin'),
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      installSubscriptionHandlers: true
+    GraphQLFederationModule.forRoot({
+      autoSchemaFile: join(__dirname, 'src/schema.gql'),
+      // installSubscriptionHandlers: true
     }),
-    // GraphQLFederationModule.forRoot({
-    //   typePaths: ['*.gql'],
-    // }),
     TasksModule
   ],
   // providers: [TasksResolver],

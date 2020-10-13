@@ -1,30 +1,17 @@
 import { Directive, ObjectType, Field, ID } from '@nestjs/graphql';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { TaskStatus } from '../enums/task.status.enum';
 
 @Directive(`@key(fields: "_id")`)
 @ObjectType()
 @Schema()
-export class Task extends Document {
+export class User extends Document {
     @Field(() => ID)
     _id: string;
 
     @Field()
     @Prop()
-    title: string;
-  
-    @Field()
-    @Prop()
-    content: string;
-
-    @Field(() => ID)
-    @Prop()
-    userId: String
-
-    @Field(() => TaskStatus)
-    @Prop()
-    status: TaskStatus;
+    name: string;
     
     @Prop({ default: true })
     active: Boolean;
@@ -36,4 +23,4 @@ export class Task extends Document {
     updatedAt: Date; 
 }
 
-export const TaskSchema = SchemaFactory.createForClass(Task);
+export const UserSchema = SchemaFactory.createForClass(User);

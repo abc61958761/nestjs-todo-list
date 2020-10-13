@@ -9,6 +9,10 @@ export const TODO_TASKS = gql`
                 title
                 content
                 status
+                user {
+                    _id
+                    name
+                }
             }
         }
     }
@@ -23,6 +27,10 @@ export const DONE_TASKS = gql`
                 title
                 content
                 status
+                user {
+                    _id
+                    name
+                }
             }
         }
     }

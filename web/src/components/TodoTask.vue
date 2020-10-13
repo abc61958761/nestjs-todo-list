@@ -6,7 +6,7 @@
             <template v-for="(task, index) in todoTasks.tasks">
                 <v-list-item v-if="todoTasks.tasks.length - 1 > index" :key="task._id">
                     <v-list-item-content>
-                        <v-list-item-title>{{task.title}}</v-list-item-title>
+                        <v-list-item-title>{{task.user.name}} : {{task.title}} </v-list-item-title>
                         <v-list-item-subtitle>{{task.content}}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -30,7 +30,7 @@
 
                 <v-list-item v-else :key="task.id" v-intersect="loadDataTodoTask" >
                     <v-list-item-content>
-                        <v-list-item-title>{{task.title}}</v-list-item-title>
+                        <v-list-item-title>{{task.user.name}} : {{task.title}} </v-list-item-title>
                         <v-list-item-subtitle>{{task.content}}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>

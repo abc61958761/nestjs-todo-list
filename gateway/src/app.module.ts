@@ -7,8 +7,8 @@ import { GraphQLGatewayModule } from '@nestjs/graphql';
       useFactory: async () => ({
         gateway: {
           serviceList: [
-            { name: 'task', url: 'http://localhost:4002/graphql',
-          }
+            { name: 'task', url: 'http://localhost:4002/graphql' },
+            { name: 'user', url: 'http://localhost:4001/graphql' }
           ],
         }
       })
