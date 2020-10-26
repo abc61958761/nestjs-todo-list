@@ -1,17 +1,17 @@
 <template>
   <v-app id="app">
-    <Task/>
+    <TaskList/>
   </v-app>
 </template>
 
 <script>
-import Task from './components/Task';
+import TaskList from './views/TaskList';
 
 export default {
   name: 'App',
 
   components: {
-    Task,
+    TaskList,
   },
 
   data: () => ({
