@@ -19,14 +19,28 @@ type TaskConnection {
   tasks: [Task!]!
 }
 
+type User {
+  _id: ID!
+  username: String!
+  role: String!
+  token: String!
+}
+
 type Query {
   todoTasks(start: Int = 0, pageSize: Int = 10): TaskConnection!
   doneTasks(start: Int = 0, pageSize: Int = 10): TaskConnection!
 }
 
 type Mutation {
+  register(userData: UserInput!): User!
+  login(username: String!, password: String!): String!
   createTask(taskData: TaskInput!): Task!
   updateTask(title: String, content: String, active: Boolean, status: TaskStatus, _id: ID!): Task!
+}
+
+input UserInput {
+  username: String!
+  password: String!
 }
 
 input TaskInput {

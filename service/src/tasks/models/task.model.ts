@@ -3,7 +3,6 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { TaskStatus } from '../enums/task.status.enum';
 
-@Directive(`@key(fields: "id")`)
 @ObjectType()
 @Schema()
 export class Task extends Document {
