@@ -11,10 +11,17 @@ export class User extends Document {
 
     @Field()
     @Prop()
-    name: string;
-    
-    @Prop({ default: true })
-    active: Boolean;
+    username: string;
+  
+    @Prop()
+    password: string;
+
+    @Prop()
+    @Field()
+    role: string;
+
+    @Field()
+    token: string;
 
     @Prop({ default: Date.now })
     createdAt: Date;
@@ -23,4 +30,11 @@ export class User extends Document {
     updatedAt: Date; 
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.pre<User>('save', async (next) => {
+    console.log(" tett")
+    next();
+})
+
+export { UserSchema };

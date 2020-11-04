@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     MongooseModule.forRoot('mongodb://root:test@localhost:27011/admin'),
     GraphQLFederationModule.forRoot({
+      context: ({ req }) => ({ req }),
       autoSchemaFile: join(__dirname, 'src/schema.gql')
     }),
     UsersModule,

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { Task } from './models/task.model';
 import { TaskInput } from './input/task.input';
 import { UpdateTaskArgs } from './args/task.update.args';
@@ -15,8 +15,11 @@ export class TasksResolver {
     
     @Query(() => TaskConnection)
     async todoTasks(
-        @Args() taskArgs: TaskArgs
+        @Args() taskArgs: TaskArgs,
+        @Context() context: any
     ) {
+        const user = context.req.headers['user'];
+        console.log(user)
         const tasks = await this.taskService.queryTasks(taskArgs, TaskStatus.WAITING);
         const taskCount = await this.taskService.taskCount(taskArgs, TaskStatus.WAITING);
         
