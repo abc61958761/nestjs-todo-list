@@ -1,4 +1,6 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { UseGuards, SetMetadata } from '@nestjs/common';
+
 import { Task } from './models/task.model';
 import { TaskInput } from './input/task.input';
 import { UpdateTaskArgs } from './args/task.update.args';
@@ -7,25 +9,31 @@ import { TasksService } from './tasks.service';
 import { TaskStatus } from './enums/task.status.enum';
 import { TaskConnection } from './models/taskConnection.model';
 import { User } from './models/user.model';
+import { GqlAuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { SuperRoles } from '../decorators/super.role';
  @Resolver(() => Task)
 export class TasksResolver {
     constructor(
         private taskService: TasksService,
     ) {}
-    
+
+    @UseGuards(GqlAuthGuard, RolesGuard)
+    @SuperRoles('vip')
     @Query(() => TaskConnection)
     async todoTasks(
         @Args() taskArgs: TaskArgs,
         @Context() context: any
     ) {
-        const user = context.req.headers['user'];
-        console.log(user)
+        const isValid = context.req.headers['is-valid'];
         const tasks = await this.taskService.queryTasks(taskArgs, TaskStatus.WAITING);
         const taskCount = await this.taskService.taskCount(taskArgs, TaskStatus.WAITING);
         
         return { tasks, taskCount }
     }
 
+    @UseGuards(GqlAuthGuard, RolesGuard)
+    @SuperRoles('vip', 'admin')
     @Query(() => TaskConnection)
     async doneTasks(
         @Args() taskArgs: TaskArgs

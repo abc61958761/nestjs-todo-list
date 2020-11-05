@@ -5,6 +5,7 @@ import { UserInput } from './input/user.input';
 import { User } from './models/user.model';
 import { UsersService } from './users.service';
 import { UserArgs } from './args/user.args';
+import { ValidateUser } from './models/validate.user.model';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -26,6 +27,18 @@ export class UsersResolver {
         return user;
     }
 
+    @Mutation(() => ValidateUser)
+    async validateToken(@Args('token') token: string) {
+        try {
+            const { userId } = this.jwtService.verify(token);
+            const user = await this.usersService.findById(userId);
+            
+            return { isValid: true, user };
+        } catch (e) {
+            return { isValid: false };
+        }
+    }
+
     @ResolveReference()
     resolveReference(reference: { __typename: string; _id: string }) {
         return this.usersService.findById(reference._id);
@@ -42,4 +55,6 @@ export class UsersResolver {
 
         return accessToken;
     }
+
+    
 }

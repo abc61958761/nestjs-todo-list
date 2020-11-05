@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { GraphQLGatewayModule, GATEWAY_BUILD_SERVICE} from '@nestjs/graphql';
+import { GraphQLGatewayModule, GATEWAY_BUILD_SERVICE } from '@nestjs/graphql';
 import { RemoteGraphQLDataSource } from '@apollo/gateway';
 import { decode } from 'jsonwebtoken';
 import fetch from 'node-fetch';
@@ -7,13 +7,15 @@ import fetch from 'node-fetch';
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   async willSendRequest({ request, context }) {
     if (context.jwt) {
-      const { userId } = await decode(context.jwt);
-
-      const GET_USER = `
-        query user ($_id: String!) {
-          user(_id: $_id) {
-            _id
-            username
+      const VALIDATE_TOKEN = `
+        mutation validateToken ($token: String!) {
+          validateToken(token: $token) {
+            isValid
+            user {
+              _id
+              username
+              role
+            }
           }
         }
       `
@@ -24,13 +26,17 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
           'Accept': 'application/json',
         },
         body: JSON.stringify({
-          query: GET_USER,
-          variables: { _id: userId },
+          query: VALIDATE_TOKEN,
+          variables: { token: context.jwt },
         })
       })
       .then(r => r.json())
       .then(({ data }) => {
-        request.http.headers.set('user', data.user);
+        request.http.headers.set('is-valid', data.validateToken.isValid);
+        if (data.validateToken.isValid && data.validateToken.user) {
+          request.http.headers.set('user-id', data.validateToken.user['_id']);
+          request.http.headers.set('user-role', data.validateToken.user['role']);
+        }
       })
       .catch(e => {
         console.log(e)
